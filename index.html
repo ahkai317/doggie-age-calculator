@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>🐶狗狗歲數計算機</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!--
+    右上角的主題切換器在卡片外，使用容器定位以避免覆蓋卡片內容
+  -->
+  <div class="theme-toggle-wrap" aria-hidden="false">
+    <label class="theme-switch" id="themeSwitchLabel" title="切換主題">
+      <input type="checkbox" id="themeToggle" />
+      <span class="slider"></span>
+      <span class="switch-text" id="switchText">開燈</span>
+    </label>
+  </div>
+
+  <!-- 卡片主容器 -->
+  <main class="page">
+    <section class="card" role="region" aria-labelledby="titleCard">
+      <h1 id="titleCard" class="title">🐶狗狗歲數計算機</h1>
+
+      <!-- 表單區塊：出生日期 -->
+      <label for="dogBirth" class="label">狗狗出生年月日：</label>
+      <input type="date" id="dogBirth" class="date-input" aria-label="狗狗出生年月日" />
+
+      <!-- 按鈕：寬度依照四個字元(4ch)並加上內距，靠左 -->
+      <button id="calculateBtn" class="btn" aria-label="開始計算">計算出</button>
+
+      <!-- 結果區塊：會以灰底黑字包覆顯示，並可從 Local Storage 還原 -->
+      <div id="result" class="result" role="status" aria-live="polite"></div>
+
+      <!-- 小提示 / 來源連結（可選） -->
+      <p class="note">📚 參考公式：人類年齡 ≈ 16 × ln(狗齡) + 31</p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,244 @@
+/* ============================================================
+   賽博龐克主題配色與排版樣式
+   - 使用主色 #FF007F (桃粉) 與 #00FFFF (青綠霓虹)
+   - 提供淺色與深色兩套變體，並透過 data-theme 屬性切換
+   - 使用 ch 作為按鈕寬度基準 (4ch + padding)，滿足「根據四個字元決定寬度」
+   ============================================================ */
+
+/* 根基字型與頁面配置 */
+:root {
+    --accent-pink: #ff007f;    /* 主色 1 */
+    --accent-cyan: #00ffff;    /* 主色 2 */
+    --muted-1: #e0e6f8;
+    --muted-2: #d9f7f7;
+    --card-radius: 12px;
+    --glass: rgba(255,255,255,0.04);
+    --shadow: 0 8px 30px rgba(0,0,0,0.25);
+    --font-sans: "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --transition: 300ms cubic-bezier(.2,.9,.3,1);
+  }
+
+  /* --- 淺色主題 (預設) --- */
+  :root[data-theme="light"] {
+    --bg: #f8fbff;            /* 主背景-淺 */
+    --card-bg: #ffffff;       /* 卡片白色 */
+    --text-primary: #0b0b0e;  /* 文字主色(深色字) */
+    --muted-ink: #6b7280;
+    --result-bg: #eef6ff;     /* 結果灰/淡色背景 */
+    --btn-bg: #e8e8e8;        /* 按鈕淺灰 */
+    --control-bg: linear-gradient(90deg,var(--accent-pink),var(--accent-cyan));
+  }
+
+  /* --- 深色主題 --- */
+  :root[data-theme="dark"] {
+    --bg: #07050a;            /* 主背景-深 */
+    --card-bg: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    --text-primary: #f3f6ff;  /* 文字主色(淺字) */
+    --muted-ink: #9aa4b2;
+    --result-bg: rgba(255,255,255,0.04);
+    --btn-bg: rgba(255,255,255,0.06);
+    --control-bg: linear-gradient(90deg,var(--accent-cyan),var(--accent-pink));
+  }
+
+  /* 全頁面基礎 */
+  * { box-sizing: border-box; }
+  html,body { height:100%; margin:0; font-family: var(--font-sans); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+  body {
+    background: radial-gradient(circle at 10% 10%, rgba(0,255,255,0.03), transparent 10%),
+                radial-gradient(circle at 90% 90%, rgba(255,0,127,0.03), transparent 12%),
+                var(--bg);
+    color: var(--text-primary);
+    transition: background var(--transition), color var(--transition);
+    padding: 32px;
+  }
+
+  /* 頁面中央置中，卡片不占滿視窗寬度，RWD 下會改變 */
+  .page {
+    min-height: calc(100vh - 64px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 20px;
+  }
+
+  /* 卡片設計：白色基底或半透明底，賽博龐克風微光邊框 */
+  .card {
+    width: 380px;
+    max-width: 94vw;
+    background: var(--card-bg);
+    border-radius: var(--card-radius);
+    box-shadow: var(--shadow);
+    padding: 22px;
+    position: relative;
+    border: 1px solid rgba(255,255,255,0.04);
+    backdrop-filter: blur(6px);
+    transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+    outline: 1px solid transparent;
+    overflow: visible;
+  }
+
+  /* 卡片的霓虹底線裝飾 */
+  .card::after {
+    content: "";
+    position:absolute;
+    left: 0;
+    bottom: -12px;
+    width: 100%;
+    height: 8px;
+    border-radius: 8px;
+    background: var(--control-bg);
+    opacity: 0.08;
+    filter: blur(8px);
+    pointer-events: none;
+  }
+
+  /* 標題靠左，字型較大 */
+  .title {
+    margin: 4px 0 14px 0;
+    font-size: 1.4rem;
+    text-align:left;
+    letter-spacing: 0.6px;
+  }
+
+  /* 標籤/輸入/按鈕靠左排版 */
+  .label {
+    display:block;
+    margin-bottom:6px;
+    color: var(--muted-ink);
+    font-size:0.95rem;
+  }
+
+  /* 日期輸入樣式：淺色與深色均保持可讀性 */
+  .date-input {
+    width:100%;
+    padding:10px 12px;
+    font-size:1rem;
+    border-radius:8px;
+    border:1px solid rgba(0,0,0,0.06);
+    background: rgba(255,255,255,0.02);
+    color: var(--text-primary);
+    margin-bottom:12px;
+    transition: box-shadow var(--transition), border var(--transition);
+  }
+
+  /* 按鈕：根據 4 字元來決定寬度 (4ch) 並加上內距，靠左 */
+  .btn {
+    display:inline-block;
+    text-align:left;
+    padding: 8px 12px;
+    /* 按鈕寬度依 4 個字元(ch) 再加上內距，符合「根據四個字元決定寬度」要求 */
+    width: calc(4ch + 2.4rem);
+    background: var(--btn-bg);
+    border: none;
+    border-radius: 8px;
+    cursor:pointer;
+    font-size: 1rem;
+    color: var(--text-primary);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    transition: transform 160ms ease, box-shadow var(--transition);
+  }
+
+  /* 按鈕互動 */
+  .btn:active { transform: translateY(1px) scale(.998); }
+  .btn:focus { outline: 3px solid rgba(0,255,255,0.08); }
+
+  /* 結果區塊：灰底黑字(淺色主題)或灰底淺字(深色主題) */
+  .result {
+    margin-top:16px;
+    padding:12px 14px;
+    background: var(--result-bg);
+    color: var(--text-primary);
+    border-radius: 8px;
+    font-size: 0.98rem;
+    white-space: pre-wrap;
+  }
+
+  /* 小提示文字 */
+  .note {
+    margin-top:12px;
+    color: var(--muted-ink);
+    font-size:0.85rem;
+  }
+
+  /* --- 右上角主題切換器樣式 (卡片外，避免覆蓋) --- */
+  .theme-toggle-wrap {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    z-index: 30;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background: transparent;
+  }
+
+  /* 自訂滑桿 */
+  .theme-switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap:8px;
+    user-select: none;
+    cursor: pointer;
+  }
+
+  .theme-switch input {
+    display:none;
+  }
+
+  /* 滑動條 */
+  .theme-switch .slider {
+    width:62px;
+    height:30px;
+    border-radius:999px;
+    background: linear-gradient(90deg, rgba(255,0,127,0.18), rgba(0,255,255,0.18));
+    display:inline-block;
+    position:relative;
+    transition: all 220ms ease;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    padding:3px;
+  }
+
+  /* 滑塊 */
+  .theme-switch .slider::before {
+    content:"";
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    background: linear-gradient(180deg,#fff, #eee);
+    display:block;
+    transition: transform 220ms cubic-bezier(.2,.9,.3,1);
+    transform: translateX(0);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  }
+
+  /* 當 checkbox checked (代表暗色模式)，滑塊移動、並反轉顏色基調 */
+  .theme-switch input:checked + .slider {
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-pink));
+  }
+  .theme-switch input:checked + .slider::before {
+    transform: translateX(32px);
+  }
+
+  /* 切換文字 (開燈/關燈) 放置於 slider 右側 */
+  .switch-text {
+    font-size:0.9rem;
+    color: var(--muted-ink);
+  }
+
+  /* --- 響應式 RWD 調整 --- */
+  @media (max-width: 520px) {
+    .card { width: 94vw; padding:18px; }
+    .theme-toggle-wrap { top: 12px; right: 12px; }
+    .title { font-size:1.15rem; }
+    .btn { width: calc(4ch + 1.6rem); padding: 8px 10px; }
+  }
+
+  @media (min-width: 900px) {
+    .card { width: 420px; padding:26px; }
+  }
+
+  /* 可選：給日期輸入與按鈕在深色下更明顯邊界 */
+  :root[data-theme="dark"] .date-input {
+    border: 1px solid rgba(255,255,255,0.06);
+  }
